@@ -17,9 +17,9 @@ public class Producto {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String nombre;
-    private Long precio;
+    private String precio;
     private String descripcion;
-    private Integer cantidad;
+    private String cantidad;
     private Boolean activo;
     @Enumerated(EnumType.STRING)
     private Categoria categoria;

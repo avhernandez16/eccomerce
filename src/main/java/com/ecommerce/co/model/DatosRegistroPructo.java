@@ -7,11 +7,11 @@ public record DatosRegistroPructo(
         @NotBlank(message = "{nombre.obligatorio}")
         String nombre,
         @NotBlank
-        Long precio,
+        String precio,
         @NotBlank
         String descripcion,
         @NotBlank
-        Integer cantidad,
+        String cantidad,
         @NotNull
         Categoria categoria
 
