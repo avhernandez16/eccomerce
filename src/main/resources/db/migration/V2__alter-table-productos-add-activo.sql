@@ -1,2 +1,2 @@
-alter table productos add activo tinyint;
-update productos set activo = 1
+ALTER TABLE productos
+ADD activo BOOLEAN DEFAULT TRUE;

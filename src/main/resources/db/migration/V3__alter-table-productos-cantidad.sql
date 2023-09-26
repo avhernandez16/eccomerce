@@ -1,4 +1,3 @@
 ALTER TABLE productos
-MODIFY cantidad varchar(100),
-MODIFY precio varchar(100)
-;
+ALTER COLUMN cantidad TYPE VARCHAR(100),
+ALTER COLUMN precio TYPE VARCHAR(100);

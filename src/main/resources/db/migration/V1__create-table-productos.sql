@@ -1,11 +1,8 @@
-create table productos(
-    id bigint not null auto_increment,
-    nombre varchar(100) not null,
-    precio bigint(100) not null,
-    descripcion varchar(100) not null,
-    cantidad tinyint(100) not null,
-    categoria varchar(100) not null,
-
-    primary key(id)
-
- );
+CREATE TABLE productos (
+    id SERIAL PRIMARY KEY,
+    nombre VARCHAR(100) NOT NULL,
+    precio BIGINT NOT NULL,
+    descripcion VARCHAR(100) NOT NULL,
+    cantidad SMALLINT NOT NULL,
+    categoria VARCHAR(100) NOT NULL
+);
