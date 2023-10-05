@@ -7,7 +7,9 @@ public interface AwsService {
 
     String getS3FileContent(String bucketName, String fileName) throws IOException;
 
+    /*
     List<Object> getS3Files(String bucketName) throws IOException;
+    */
 
     byte[] downloadFile(String bucketName, String fileName) throws IOException;
 

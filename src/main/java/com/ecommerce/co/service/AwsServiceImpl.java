@@ -29,9 +29,10 @@ public class AwsServiceImpl implements AwsService{
         this.s3Repository = s3Repository;
     }
 
+    /*
     public List<Object> getS3Files(String bucket) {
         return s3Repository.listObjectsInBucket(bucket);
-    }
+    }*/
 
     public String getS3FileContent(String bucketName, String fileName) throws IOException {
         return getAsString(s3Repository.getObject(bucketName, fileName));

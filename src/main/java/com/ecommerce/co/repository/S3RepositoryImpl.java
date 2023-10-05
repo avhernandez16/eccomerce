@@ -30,7 +30,7 @@ public class S3RepositoryImpl implements S3Repository{
 
     private static final Logger log = LoggerFactory.getLogger(S3RepositoryImpl.class);
 
-
+    /*
     @Override
     public List<Object> listObjectsInBucket(String bucket) {
         List<Object>  items =
@@ -43,6 +43,8 @@ public class S3RepositoryImpl implements S3Repository{
         log.info("Found " + items.size() + " objects in the bucket " + bucket);
         return items;
     }
+    */
+    /*
     private Object mapS3ToObject(String bucket, String key) {
 
         return Object.builder()
@@ -51,7 +53,7 @@ public class S3RepositoryImpl implements S3Repository{
                 .url(s3Client.getUrl(bucket, key))
                 .build();
     }
-
+    */
     @Override
     public S3ObjectInputStream getObject(String bucketName, String fileName) throws IOException {
         if (!s3Client.doesBucketExist(bucketName)) {

@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface S3Repository {
 
-    List<Object> listObjectsInBucket(String bucket);
+    /*List<Object> listObjectsInBucket(String bucket);*/
 
     S3ObjectInputStream getObject(String bucketName, String fileName) throws IOException;
 

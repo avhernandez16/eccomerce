@@ -7,3 +7,7 @@ cloud:
       static: us-east-1
     stack:
       auto: false
+
+application:
+  bucket:
+    name: ecommerceproductosstorages
