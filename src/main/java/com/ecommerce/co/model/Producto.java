@@ -1,14 +1,16 @@
 package com.ecommerce.co.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
+
+import java.util.LinkedList;
+import java.util.List;
 
 @Table(name = "productos")
 @Entity(name = "Producto")
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(of = "id")
@@ -16,39 +18,58 @@ public class Producto {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String nombre;
-    private String precio;
+    @Column(name = "urlimg")
+    private String urlImg;
+    private String name;
     private String descripcion;
-    private String cantidad;
-    private Boolean activo;
     @Enumerated(EnumType.STRING)
-    private Categoria categoria;
+    private Section section;
+    private String stock;
+    private String precio;
+    private String codigoEAN;
+    private Boolean activo;
+    @JsonIgnore
+    @OneToMany(mappedBy = "producto", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Comentario> listaComentarios;
+
 
     public Producto(DatosRegistroPructo datosRegistroPructo) {
         this.activo = true;
-        this.nombre= datosRegistroPructo.nombre();
-        this.precio = datosRegistroPructo.precio();
+        this.urlImg = datosRegistroPructo.urlImg();
+        this.name = datosRegistroPructo.name();
         this.descripcion = datosRegistroPructo.descripcion();
-        this.cantidad = datosRegistroPructo.cantidad();
-        this.categoria = datosRegistroPructo.categoria();
+        this.section = datosRegistroPructo.section();
+        this.stock = datosRegistroPructo.stock();
+        this.precio = datosRegistroPructo.precio();
+        this.codigoEAN = datosRegistroPructo.codigoEAN();
+        this.listaComentarios = datosRegistroPructo.listaComentarios();
     }
 
     public void actualizarProducto(DatosActualizarProducto datosActualizarProducto) {
-        if (datosActualizarProducto.nombre()!=null){
-            this.nombre= datosActualizarProducto.nombre();
+        if (datosActualizarProducto.urlImg()!=null){
+            this.urlImg = datosActualizarProducto.urlImg();
         }
-        if (datosActualizarProducto.precio()!= null){
-            this.precio = datosActualizarProducto.precio();
+        if (datosActualizarProducto.name()!=null){
+            this.name = datosActualizarProducto.name();
         }
         if (datosActualizarProducto.descripcion()!= null){
             this.descripcion = datosActualizarProducto.descripcion();
         }
-        if (datosActualizarProducto.cantidad()!= null){
-            this.cantidad = datosActualizarProducto.cantidad();
+        if (datosActualizarProducto.stock()!= null){
+            this.stock = datosActualizarProducto.stock();
         }
+        if (datosActualizarProducto.precio()!= null){
+            this.precio = datosActualizarProducto.precio();
+        }
+        if (datosActualizarProducto.codigoEAN()!= null){
+            this.codigoEAN = datosActualizarProducto.codigoEAN();
+        }
+
     }
 
     public void desactivarProducto() {
         this.activo = false;
     }
+
+
 }

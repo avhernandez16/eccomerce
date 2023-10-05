@@ -1,12 +1,8 @@
 package com.ecommerce.co.controller;
 
 import com.ecommerce.co.model.*;
-import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -14,6 +10,8 @@ import org.springframework.web.util.UriComponentsBuilder;
 import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static com.ecommerce.co.model.ListadoProducto.transformarComentarios;
 
 @RestController
 @RequestMapping("/productos")
@@ -29,8 +27,9 @@ public class ProductoController {
         System.out.println(datosRegistroPructo);
         Producto producto = productoRepository.save(new Producto(datosRegistroPructo));
         //necesito los datos desde el dto
-        DatosRespuestaProducto datosRespuestaProducto = new DatosRespuestaProducto(producto.getId(), producto.getNombre(),
-                producto.getPrecio(), producto.getDescripcion(), producto.getCantidad(), producto.getCategoria().toString()
+        DatosRespuestaProducto datosRespuestaProducto = new DatosRespuestaProducto(producto.getId(), producto.getUrlImg(), producto.getName(),
+                producto.getDescripcion(), producto.getSection().toString(), producto.getStock(), producto.getPrecio(),producto.getCodigoEAN(),
+                producto.getListaComentarios()
                 );
 
         //url del objeto
@@ -41,18 +40,19 @@ public class ProductoController {
 
     @GetMapping
     public ResponseEntity<List<ListadoProducto>> listadoProductos(){
-        List<ListadoProducto> listaMedicos = productoRepository.findByActivoTrue().stream()
+        List<ListadoProducto> listadoProductos = productoRepository.findByActivoTrue().stream()
                 .map(ListadoProducto::new)
                 .collect(Collectors.toList());
 
-        return ResponseEntity.ok(listaMedicos);
+        return ResponseEntity.ok(listadoProductos);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<DatosRespuestaProducto> retornaDatosProducto(@PathVariable Long id){
+    public ResponseEntity<ListadoProducto> retornaDatosProducto(@PathVariable Long id){
         Producto producto = productoRepository.getReferenceById(id);
-        var datosProducto = new DatosRespuestaProducto(producto.getId(), producto.getNombre(),
-                producto.getPrecio(), producto.getDescripcion(), producto.getCantidad(), producto.getCategoria().toString());
+        var comentariosTransformados = transformarComentarios(producto.getListaComentarios());
+        var datosProducto = new ListadoProducto(producto.getId(), producto.getUrlImg(), producto.getName(),
+                producto.getDescripcion(), producto.getSection().toString(), producto.getStock(), producto.getPrecio(), producto.getCodigoEAN(), comentariosTransformados);
         return ResponseEntity.ok(datosProducto);
     }
 
@@ -63,8 +63,10 @@ public class ProductoController {
         Producto producto = productoRepository.getReferenceById(datosActualizarProducto.id());
         producto.actualizarProducto(datosActualizarProducto);
 
-        return ResponseEntity.ok(new DatosRespuestaProducto(producto.getId(), producto.getNombre(),
-                producto.getPrecio(), producto.getDescripcion(), producto.getCantidad(), producto.getCategoria().toString()));
+        var comentariosTransformados = transformarComentarios(producto.getListaComentarios());
+        var datosProducto = new ListadoProducto(producto.getId(), producto.getUrlImg(), producto.getName(),
+                producto.getDescripcion(), producto.getSection().toString(), producto.getStock(), producto.getPrecio(), producto.getCodigoEAN(), comentariosTransformados);
+        return ResponseEntity.ok(datosProducto);
     }
 
     @DeleteMapping("/{id}")

@@ -1,5 +1,7 @@
 package com.ecommerce.co.model;
 
-public record DatosRespuestaProducto(Long id, String nombre, String precio, String descripcion, String cantidad,
-                                     String string) {
+import java.util.List;
+
+public record DatosRespuestaProducto(Long id, String urlImg, String name, String descripcion, String string,
+                                     String stock, String precio, String codigoEAN, List<Comentario> listaComentarios) {
 }
