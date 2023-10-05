@@ -21,6 +21,7 @@ public class ProductoController {
     @Autowired
     private ProductoRepository productoRepository;
 
+    @CrossOrigin("http://localhost:5000/productos")
     @PostMapping
     public ResponseEntity<DatosRespuestaProducto> registrarProducto(@RequestBody @Valid DatosRegistroPructo datosRegistroPructo,
                                                                     UriComponentsBuilder uriComponentsBuilder){
@@ -57,7 +58,7 @@ public class ProductoController {
         return ResponseEntity.ok(datosProducto);
     }
 
-
+    @CrossOrigin("http://localhost:5000/productos")
     @PutMapping
     //cuando termina el metodo hace el commit en la bd y libera la tx
     public ResponseEntity actualizarProducto(@RequestBody @Valid DatosActualizarProducto datosActualizarProducto){
