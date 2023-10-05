@@ -20,24 +20,6 @@ public class ComentarioController {
     @Autowired
     private ProductoRepository productoRepository;
 
-    /*
-    @PostMapping
-    public ResponseEntity<DatosRespuestaComentario> registrarComentario(@RequestBody @Valid DatosRegistrarComentario datosRegistrarComentario,
-                                                                      UriComponentsBuilder uriComponentsBuilder){
-        System.out.println("El request es exitoso");
-        System.out.println(datosRegistrarComentario);
-        Comentario comentario = comentarioRepository.save(new Comentario(datosRegistrarComentario));
-        //necesito los datos desde el dto
-        DatosRespuestaComentario datosRespuestaComentario= new DatosRespuestaComentario(comentario.getId(), comentario.getCreateAt(),
-                comentario.getComment(), comentario.getProducto().getId());
-
-        //url del objeto
-        URI url = uriComponentsBuilder.path("/comments/{id}").buildAndExpand(comentario.getId()).toUri();
-        return ResponseEntity.created(url).body(datosRespuestaComentario);
-
-    }*/
-
-
     @PostMapping
     public ResponseEntity<DatosRespuestaComentario> registrarComentario(
             @RequestBody @Valid DatosRegistrarComentario datosRegistrarComentario,
