@@ -1,6 +1,7 @@
 package com.ecommerce.co.controller;
 
 import com.ecommerce.co.model.*;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -56,6 +57,7 @@ public class ProductoController {
         return ResponseEntity.ok(datosProducto);
     }
 
+
     @PutMapping
     //cuando termina el metodo hace el commit en la bd y libera la tx
     public ResponseEntity actualizarProducto(@RequestBody @Valid DatosActualizarProducto datosActualizarProducto){
@@ -83,5 +85,33 @@ public class ProductoController {
 //        productoRepository.delete(producto);
 //
 //    }
+
+    @GetMapping("/buscar")
+    public ResponseEntity<List<ListadoProducto>> buscarProductosPorNombre(@RequestParam("name") String name) {
+        List<Producto> productosEncontrados = productoRepository.findByNameContaining(name);
+
+        if (productosEncontrados.isEmpty()) {
+            throw new EntityNotFoundException("No se encontró ningún producto con el nombre: " + name);
+        }
+
+        // Transforma los productos encontrados en ListadoProducto
+        List<ListadoProducto> listadoProductos = productosEncontrados.stream()
+                .map(ListadoProducto::new)
+                .collect(Collectors.toList());
+
+        return ResponseEntity.ok(listadoProductos);
+    }
+
+    @GetMapping("/seccion")
+    public ResponseEntity<List<ListadoProducto>> buscarProductosPorSeccion(@RequestParam("section") Section section) {
+        List<Producto> productosEncontrados = productoRepository.findBySection(section);
+
+        // Transforma los productos encontrados en ListadoProducto
+        List<ListadoProducto> listadoProductos = productosEncontrados.stream()
+                .map(ListadoProducto::new)
+                .collect(Collectors.toList());
+
+        return ResponseEntity.ok(listadoProductos);
+    }
 
 }
