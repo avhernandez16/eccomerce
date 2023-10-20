@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Table(name = "productos")
@@ -44,6 +45,14 @@ public class Producto {
         this.codigoEAN = datosRegistroPructo.codigoEAN();
         this.comments = datosRegistroPructo.comments();
     }
+    public void agregarComentario(Comentario comentario) {
+        if (comments == null) {
+            comments = new ArrayList<>();
+        }
+        comments.add(comentario);
+        comentario.setProducto(this);
+    }
+
 
     public void actualizarProducto(DatosActualizarProducto datosActualizarProducto) {
         if (datosActualizarProducto.urlImg()!=null){

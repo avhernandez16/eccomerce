@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/comments")
+@RequestMapping("/productos/{productoId}")
 public class ComentarioController {
     @Autowired
     private ComentarioRepository comentarioRepository;
@@ -42,6 +42,8 @@ public class ComentarioController {
 
         return ResponseEntity.created(url).body(datosRespuestaComentario);
     }
+
+
 
 
 

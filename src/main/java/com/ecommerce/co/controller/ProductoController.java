@@ -10,6 +10,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static com.ecommerce.co.model.ListadoProducto.transformarComentarios;
@@ -40,13 +41,14 @@ public class ProductoController {
         DatosRespuestaProducto datosRespuestaProducto = new DatosRespuestaProducto(producto.getId(), producto.getUrlImg(), producto.getName(),
                 producto.getDescripcion(), producto.getSection().toString(), producto.getStock(), producto.getPrecio(),producto.getCodigoEAN(),
                 producto.getComments()
-                );
+        );
 
         //url del objeto
         URI url = uriComponentsBuilder.path("/producto/{id}").buildAndExpand(producto.getId()).toUri();
         return ResponseEntity.created(url).body(datosRespuestaProducto);
 
     }
+
 
     @GetMapping
     public ResponseEntity<List<ListadoProducto>> listadoProductos(){
