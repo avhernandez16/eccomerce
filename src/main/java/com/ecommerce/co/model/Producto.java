@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.LinkedList;
 import java.util.List;
 
 @Table(name = "productos")
@@ -16,7 +15,7 @@ import java.util.List;
 @EqualsAndHashCode(of = "id")
 public class Producto {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
     @Column(name = "urlimg")
     private String urlImg;
@@ -30,10 +29,11 @@ public class Producto {
     private Boolean activo;
     @JsonIgnore
     @OneToMany(mappedBy = "producto", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Comentario> listaComentarios;
+    private List<Comentario> comments;
 
 
     public Producto(DatosRegistroPructo datosRegistroPructo) {
+        this.id = id;
         this.activo = true;
         this.urlImg = datosRegistroPructo.urlImg();
         this.name = datosRegistroPructo.name();
@@ -42,7 +42,7 @@ public class Producto {
         this.stock = datosRegistroPructo.stock();
         this.precio = datosRegistroPructo.precio();
         this.codigoEAN = datosRegistroPructo.codigoEAN();
-        this.listaComentarios = datosRegistroPructo.listaComentarios();
+        this.comments = datosRegistroPructo.comments();
     }
 
     public void actualizarProducto(DatosActualizarProducto datosActualizarProducto) {

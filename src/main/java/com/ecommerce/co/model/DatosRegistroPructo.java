@@ -6,7 +6,7 @@ import jakarta.validation.constraints.NotNull;
 import java.util.List;
 
 public record DatosRegistroPructo(
-
+        Long id,
         @NotBlank(message = "{urlImg.obligatorio}")
         String urlImg,
         @NotBlank(message = "{nombre.obligatorio}")
@@ -22,7 +22,7 @@ public record DatosRegistroPructo(
         @NotBlank
         String codigoEAN,
 
-        List<Comentario> listaComentarios
+        List<Comentario> comments
 ) {
 
 }

@@ -21,17 +21,25 @@ public class ProductoController {
     @Autowired
     private ProductoRepository productoRepository;
 
-    @CrossOrigin("http://localhost:5000/productos")
+    @CrossOrigin("http://127.0.0.1:5173/productos")
     @PostMapping
     public ResponseEntity<DatosRespuestaProducto> registrarProducto(@RequestBody @Valid DatosRegistroPructo datosRegistroPructo,
                                                                     UriComponentsBuilder uriComponentsBuilder){
         System.out.println("El request es exitoso");
+        Long id = datosRegistroPructo.id();
         System.out.println(datosRegistroPructo);
-        Producto producto = productoRepository.save(new Producto(datosRegistroPructo));
+
+        Producto producto = new Producto(datosRegistroPructo);
+
+
+        producto.setId(id);
+
+
+        producto = productoRepository.save(producto);
         //necesito los datos desde el dto
         DatosRespuestaProducto datosRespuestaProducto = new DatosRespuestaProducto(producto.getId(), producto.getUrlImg(), producto.getName(),
                 producto.getDescripcion(), producto.getSection().toString(), producto.getStock(), producto.getPrecio(),producto.getCodigoEAN(),
-                producto.getListaComentarios()
+                producto.getComments()
                 );
 
         //url del objeto
@@ -52,13 +60,13 @@ public class ProductoController {
     @GetMapping("/{id}")
     public ResponseEntity<ListadoProducto> retornaDatosProducto(@PathVariable Long id){
         Producto producto = productoRepository.getReferenceById(id);
-        var comentariosTransformados = transformarComentarios(producto.getListaComentarios());
+        var comentariosTransformados = transformarComentarios(producto.getComments());
         var datosProducto = new ListadoProducto(producto.getId(), producto.getUrlImg(), producto.getName(),
                 producto.getDescripcion(), producto.getSection().toString(), producto.getStock(), producto.getPrecio(), producto.getCodigoEAN(), comentariosTransformados);
         return ResponseEntity.ok(datosProducto);
     }
 
-    @CrossOrigin("http://localhost:5000/productos")
+    @CrossOrigin("http://127.0.0.1:5173/productos")
     @PutMapping
     //cuando termina el metodo hace el commit en la bd y libera la tx
     public ResponseEntity actualizarProducto(@RequestBody @Valid DatosActualizarProducto datosActualizarProducto){
@@ -66,7 +74,7 @@ public class ProductoController {
         Producto producto = productoRepository.getReferenceById(datosActualizarProducto.id());
         producto.actualizarProducto(datosActualizarProducto);
 
-        var comentariosTransformados = transformarComentarios(producto.getListaComentarios());
+        var comentariosTransformados = transformarComentarios(producto.getComments());
         var datosProducto = new ListadoProducto(producto.getId(), producto.getUrlImg(), producto.getName(),
                 producto.getDescripcion(), producto.getSection().toString(), producto.getStock(), producto.getPrecio(), producto.getCodigoEAN(), comentariosTransformados);
         return ResponseEntity.ok(datosProducto);
