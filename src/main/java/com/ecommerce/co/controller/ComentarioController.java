@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/productos/{productoId}")
+@RequestMapping("/comments")
 public class ComentarioController {
     @Autowired
     private ComentarioRepository comentarioRepository;

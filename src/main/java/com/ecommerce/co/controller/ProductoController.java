@@ -2,6 +2,7 @@ package com.ecommerce.co.controller;
 
 import com.ecommerce.co.model.*;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -22,21 +23,13 @@ public class ProductoController {
     @Autowired
     private ProductoRepository productoRepository;
 
-    @CrossOrigin("http://127.0.0.1:5173/productos")
+
     @PostMapping
     public ResponseEntity<DatosRespuestaProducto> registrarProducto(@RequestBody @Valid DatosRegistroPructo datosRegistroPructo,
                                                                     UriComponentsBuilder uriComponentsBuilder){
         System.out.println("El request es exitoso");
-        Long id = datosRegistroPructo.id();
         System.out.println(datosRegistroPructo);
-
-        Producto producto = new Producto(datosRegistroPructo);
-
-
-        producto.setId(id);
-
-
-        producto = productoRepository.save(producto);
+        Producto producto = productoRepository.save(new Producto(datosRegistroPructo));
         //necesito los datos desde el dto
         DatosRespuestaProducto datosRespuestaProducto = new DatosRespuestaProducto(producto.getId(), producto.getUrlImg(), producto.getName(),
                 producto.getDescripcion(), producto.getSection().toString(), producto.getStock(), producto.getPrecio(),producto.getCodigoEAN(),
@@ -68,8 +61,9 @@ public class ProductoController {
         return ResponseEntity.ok(datosProducto);
     }
 
-    @CrossOrigin("http://127.0.0.1:5173/productos")
+
     @PutMapping
+    @Transactional
     //cuando termina el metodo hace el commit en la bd y libera la tx
     public ResponseEntity actualizarProducto(@RequestBody @Valid DatosActualizarProducto datosActualizarProducto){
 
@@ -83,19 +77,19 @@ public class ProductoController {
     }
 
     @DeleteMapping("/{id}")
-
-    public ResponseEntity eliminarProducto(@PathVariable Long id){
-        Producto producto = productoRepository.getReferenceById(id);
-        producto.desactivarProducto();
-        return ResponseEntity.noContent().build();
-    }
-
-    //delete de la bd
-//    public void eliminarProducto(@PathVariable Long id){
+    @Transactional
+//    public ResponseEntity eliminarProducto(@PathVariable Long id){
 //        Producto producto = productoRepository.getReferenceById(id);
-//        productoRepository.delete(producto);
-//
+//        producto.desactivarProducto();
+//        return ResponseEntity.noContent().build();
 //    }
+
+   // delete de la bd
+    public void eliminarProducto(@PathVariable Long id){
+        Producto producto = productoRepository.getReferenceById(id);
+        productoRepository.delete(producto);
+
+    }
 
     @GetMapping("/buscar")
     public ResponseEntity<List<ListadoProducto>> buscarProductosPorNombre(@RequestParam("name") String name) {

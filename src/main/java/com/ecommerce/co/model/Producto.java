@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Table(name = "productos")
@@ -16,7 +15,7 @@ import java.util.List;
 @EqualsAndHashCode(of = "id")
 public class Producto {
     @Id
-    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(name = "urlimg")
     private String urlImg;
@@ -34,7 +33,6 @@ public class Producto {
 
 
     public Producto(DatosRegistroPructo datosRegistroPructo) {
-        this.id = id;
         this.activo = true;
         this.urlImg = datosRegistroPructo.urlImg();
         this.name = datosRegistroPructo.name();
@@ -45,14 +43,6 @@ public class Producto {
         this.codigoEAN = datosRegistroPructo.codigoEAN();
         this.comments = datosRegistroPructo.comments();
     }
-    public void agregarComentario(Comentario comentario) {
-        if (comments == null) {
-            comments = new ArrayList<>();
-        }
-        comments.add(comentario);
-        comentario.setProducto(this);
-    }
-
 
     public void actualizarProducto(DatosActualizarProducto datosActualizarProducto) {
         if (datosActualizarProducto.urlImg()!=null){

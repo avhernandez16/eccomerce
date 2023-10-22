@@ -5,7 +5,6 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
 public record DatosRegistrarComentario(
-        Long id,
         @NotBlank
         String createAt,
         @NotBlank

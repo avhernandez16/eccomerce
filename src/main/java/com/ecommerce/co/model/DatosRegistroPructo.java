@@ -6,7 +6,6 @@ import jakarta.validation.constraints.NotNull;
 import java.util.List;
 
 public record DatosRegistroPructo(
-        Long id,
         @NotBlank(message = "{urlImg.obligatorio}")
         String urlImg,
         @NotBlank(message = "{nombre.obligatorio}")

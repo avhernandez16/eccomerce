@@ -14,6 +14,7 @@ import lombok.*;
 @EqualsAndHashCode(of = "id")
 public class Comentario {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(name = "createat")
     private String createAt;
@@ -27,10 +28,4 @@ public class Comentario {
         this.comment = datosRegistrarComentario.comment();
         this.producto = producto;
     }
-    public Comentario(ComentarioCreationDTO comentarioDTO, Producto producto) {
-        this.createAt = comentarioDTO.createAt();
-        this.comment = comentarioDTO.comment();
-        this.producto = producto;
-    }
-
 }
