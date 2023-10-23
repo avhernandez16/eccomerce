@@ -9,7 +9,7 @@ public record DatosRegistrarComentario(
         String createAt,
         @NotBlank
         String comment,
-
+        @NotNull
         Long productoId
 ) {
 

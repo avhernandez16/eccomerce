@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class TratadorDeErrores {
 
+
     //objeto no encontrado en la url
     @ExceptionHandler(EntityNotFoundException.class)
     public ResponseEntity tratarError404(){
@@ -28,4 +29,5 @@ public class TratadorDeErrores {
             this(error.getField(), error.getDefaultMessage());
         }
     }
+
 }

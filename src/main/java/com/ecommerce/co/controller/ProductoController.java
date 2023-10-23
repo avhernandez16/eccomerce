@@ -11,7 +11,6 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static com.ecommerce.co.model.ListadoProducto.transformarComentarios;
@@ -22,6 +21,8 @@ public class ProductoController {
 
     @Autowired
     private ProductoRepository productoRepository;
+    @Autowired
+    private ComentarioRepository comentarioRepository;
 
 
     @PostMapping
@@ -75,6 +76,54 @@ public class ProductoController {
                 producto.getDescripcion(), producto.getSection().toString(), producto.getStock(), producto.getPrecio(), producto.getCodigoEAN(), comentariosTransformados);
         return ResponseEntity.ok(datosProducto);
     }
+
+
+    @PutMapping("/{id}")
+    @Transactional
+    public ResponseEntity<DatosRespuestaComentario> actualizarComentario(@RequestBody @Valid DatosActualizarProducto datosActualizarProducto,
+                                                                         UriComponentsBuilder uriComponentsBuilder                                               ,
+                                               @PathVariable Long id) {
+        Producto producto = productoRepository.getReferenceById(id);
+
+        // Crear un nuevo comentario con la información proporcionada y el producto obtenido
+        DatosRegistrarComentario datosRegistrarComentario = new DatosRegistrarComentario(producto.getComments().get(0).getCreateAt(),
+                producto.getComments().get(0).getComment(), id);
+        Comentario comentario = new Comentario(datosRegistrarComentario, producto);
+        comentario = comentarioRepository.save(comentario);
+
+        // Crear la respuesta
+        DatosRespuestaComentario datosRespuestaComentario = new DatosRespuestaComentario(
+                comentario.getId(), comentario.getCreateAt(), comentario.getComment(), comentario.getProducto().getId());
+
+        // Crear la URL del objeto
+        URI url = uriComponentsBuilder.path("/comments/{id}").buildAndExpand(comentario.getId()).toUri();
+
+        return ResponseEntity.created(url).body(datosRespuestaComentario);
+
+
+
+
+//        // Verificar si la lista de comentarios no está vacía
+//        if (!producto.getComments().isEmpty()) {
+//            // Tomar el primer comentario de la lista
+////            Comentario comentario = producto.getComments().get(0);
+////            comentario.setCreateAt(producto.getComments().get(0).getCreateAt());
+////            comentario.setComment(producto.getComments().get(0).getComment());
+////            comentario.setProducto(producto);
+//
+//            Comentario comentario1 = comentarioRepository.save(new Comentario(datosRegistrarComentario, producto));
+//
+//        }
+//
+//        var comentariosTransformados = transformarComentarios(producto.getComments());
+//        var datosProducto = new ListadoProducto(producto.getId(), producto.getUrlImg(), producto.getName(),
+//                producto.getDescripcion(), producto.getSection().toString(), producto.getStock(), producto.getPrecio(), producto.getCodigoEAN(), comentariosTransformados);
+//        return ResponseEntity.ok(datosProducto);
+    }
+
+
+
+
 
     @DeleteMapping("/{id}")
     @Transactional

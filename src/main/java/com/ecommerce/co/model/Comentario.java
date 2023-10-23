@@ -23,6 +23,7 @@ public class Comentario {
     @JoinColumn(name = "producto_id")
     private Producto producto;
 
+
     public Comentario(DatosRegistrarComentario datosRegistrarComentario, Producto producto) {
         this.createAt = datosRegistrarComentario.createAt();
         this.comment = datosRegistrarComentario.comment();

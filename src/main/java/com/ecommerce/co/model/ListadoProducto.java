@@ -15,7 +15,7 @@ public record ListadoProducto(Long id, String urlImg, String name, String descri
     }
 
     public static List<ListadoComentario> transformarComentarios(List<Comentario> comments) {
-        Collections.reverse(comments);  // Invierte el orden de la lista
+        //Collections.reverse(comments);  // Invierte el orden de la lista
         return comments.stream()
                 .map(comentario -> new ListadoComentario(comentario.getId(), comentario.getCreateAt(), comentario.getComment()))
                 .collect(Collectors.toList());
