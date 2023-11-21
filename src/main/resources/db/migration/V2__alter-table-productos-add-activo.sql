@@ -1,2 +1,0 @@
-ALTER TABLE productos
-ADD activo BOOLEAN DEFAULT TRUE;

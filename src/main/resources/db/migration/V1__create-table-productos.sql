@@ -6,6 +6,6 @@ CREATE TABLE productos (
     section VARCHAR(100) NOT NULL,
     stock VARCHAR(100) NOT NULL,
     precio VARCHAR(100) NOT NULL,
-    codigoEAN VARCHAR(100) NOT NULL
+    codigoEAN VARCHAR(100) NOT NULL,
+    activo BOOLEAN DEFAULT TRUE
 );
-
